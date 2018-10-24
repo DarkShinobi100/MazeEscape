@@ -8,6 +8,9 @@
 
 // Project Includes
 #include "AssetManager.h"
+#include "Wall.h"
+#include "Exit.h"
+
 
 // The main() Function - entry point for our program
 int main()
@@ -34,6 +37,12 @@ int main()
 
 	// Game camera
 	sf::View camera = gameWindow.getDefaultView();
+
+	//create a wall
+	Wall aWall;
+
+	//create the exit
+	Exit aExit;
 
 	// -----------------------------------------------
 	// Game Loop
@@ -86,6 +95,8 @@ int main()
 		// Draw game world to the window
 		gameWindow.setView(camera);
 		// TODO: Draw game objects
+		aWall.Draw(gameWindow); //create a wall
+		aExit.Draw(gameWindow); //create a wall
 
 		// Draw UI to the window
 		gameWindow.setView(gameWindow.getDefaultView());
