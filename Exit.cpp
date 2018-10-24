@@ -7,4 +7,5 @@ Exit::Exit()
 
 {
 	m_Sprite.setTexture(AssetManager::GetTexture("graphics/DoorClosed.png"));
+	m_Sprite.setPosition(150.0f, 0.0f);
 }
