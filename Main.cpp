@@ -10,6 +10,8 @@
 #include "AssetManager.h"
 #include "Wall.h"
 #include "Exit.h"
+#include "Player.h"
+#include "Baddy.h"
 
 
 // The main() Function - entry point for our program
@@ -44,6 +46,12 @@ int main()
 	//create the exit
 	Exit aExit;
 	
+	//create the player
+	Player Player;
+
+	//create the Baddy
+	Baddy Baddy;
+
 	// -----------------------------------------------
 	// Game Loop
 	// -----------------------------------------------
@@ -74,10 +82,11 @@ int main()
 		// Update Section
 		// -----------------------------------------------
 		// Get the time passed since the last frame and restart our game clock
-		sf::Time frameTime = gameClock.restart();
+		sf::Time FrameTime = gameClock.restart();
 
 		// TODO: Update all game objects
-
+		Player.Update(FrameTime);
+		Baddy.Update(FrameTime);
 
 		// -----------------------------------------------
 		// Collision Section
@@ -96,7 +105,9 @@ int main()
 		gameWindow.setView(camera);
 		// TODO: Draw game objects
 		aWall.Draw(gameWindow); //create a wall
-		aExit.Draw(gameWindow); //create a wall
+		aExit.Draw(gameWindow); //create an exit door
+		Player.Draw(gameWindow); //create the player
+		Baddy.Draw(gameWindow); //create the Enemy
 
 		// Draw UI to the window
 		gameWindow.setView(gameWindow.getDefaultView());
