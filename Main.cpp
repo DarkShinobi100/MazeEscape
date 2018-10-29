@@ -41,6 +41,8 @@ int main()
 	// Game camera
 	sf::View camera = gameWindow.getDefaultView();
 
+
+	//-=create test objects=-
 	//create a wall
 	Wall aWall;
 
