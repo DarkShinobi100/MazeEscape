@@ -12,6 +12,7 @@
 #include "Exit.h"
 #include "Player.h"
 #include "Baddy.h"
+#include "Score.h"
 
 
 // The main() Function - entry point for our program
@@ -51,6 +52,9 @@ int main()
 
 	//create the Baddy
 	Baddy Baddy;
+
+	//create the score item
+	Score Score;
 
 	// -----------------------------------------------
 	// Game Loop
@@ -108,6 +112,7 @@ int main()
 		aExit.Draw(gameWindow); //create an exit door
 		Player.Draw(gameWindow); //create the player
 		Baddy.Draw(gameWindow); //create the Enemy
+		Score.Draw(gameWindow); //create the score
 
 		// Draw UI to the window
 		gameWindow.setView(gameWindow.getDefaultView());
