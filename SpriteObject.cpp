@@ -13,3 +13,8 @@ void SpriteObject::Draw(sf::RenderTarget& _Target)
 {
 	_Target.draw(m_Sprite);
 }
+
+sf::FloatRect SpriteObject::GetBounds() //function for setting up bounding boxes
+{
+	return m_Sprite.getGlobalBounds();
+}

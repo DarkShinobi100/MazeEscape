@@ -15,6 +15,7 @@ public:
 
 	//overwriding methods
 	void Draw(sf::RenderTarget& _Target);
+	sf::FloatRect GetBounds(); //function for setting up bounding boxes
 
 protected: //this means derived/child classes can access
 

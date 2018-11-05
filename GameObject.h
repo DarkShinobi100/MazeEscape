@@ -6,9 +6,18 @@
 class GameObject
 {
 public:
+	GameObject();
 
 	//these will be very simple/empty functions
 	//that can be overwritten in derived classes
-	void Draw(sf::RenderTarget& _Target);
-	void Update(sf::Time _FrameTime);
+	virtual void Draw(sf::RenderTarget& _Target);
+	virtual void Update(sf::Time _FrameTime);
+	virtual sf::FloatRect GetBounds(); //function for setting up bounding boxes
+	virtual void Collide(GameObject& _Collider);
+	bool IsActive();
+
+protected:
+	bool m_active;
+
+
 };
