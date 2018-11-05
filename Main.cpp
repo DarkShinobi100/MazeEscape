@@ -13,7 +13,7 @@
 #include "Player.h"
 #include "Baddy.h"
 #include "Score.h"
-
+#include "Coin.h"
 
 // The main() Function - entry point for our program
 int main()
@@ -58,6 +58,9 @@ int main()
 	//create the score item
 	Score Score;
 
+	//create a Coin
+	Coin Coin;
+
 	// -----------------------------------------------
 	// Game Loop
 	// -----------------------------------------------
@@ -91,15 +94,32 @@ int main()
 		sf::Time FrameTime = gameClock.restart();
 
 		// TODO: Update all game objects
-		Player.Update(FrameTime);
-		Baddy.Update(FrameTime);
+		// Only draw if the game object is active
+		if (Player.IsActive())
+		{
+			Player.Update(FrameTime);
+		}
+		if (Baddy.IsActive())
+		{
+			Baddy.Update(FrameTime);
+		}
+		if (Coin.IsActive())
+		{
+			Coin.Update(FrameTime);
+		}
 
 		// -----------------------------------------------
 		// Collision Section
 		// -----------------------------------------------
 
 		// TODO: Collision detection
-
+		if (Coin.IsActive() && Player.IsActive())
+		{
+			if (Coin.GetBounds().intersects(Player.GetBounds()))
+			{
+				Coin.Collide(Player);
+			}
+		}
 
 		// -----------------------------------------------
 		// Draw Section
@@ -112,9 +132,18 @@ int main()
 		// TODO: Draw game objects
 		aWall.Draw(gameWindow); //create a wall
 		aExit.Draw(gameWindow); //create an exit door
-		Player.Draw(gameWindow); //create the player
 		Baddy.Draw(gameWindow); //create the Enemy
 		Score.Draw(gameWindow); //create the score
+		
+		//only draw when active
+		if (Player.IsActive())
+		{
+			Player.Draw(gameWindow); //create the score
+		}
+		if (Coin.IsActive())
+		{
+			Coin.Draw(gameWindow); //create the score
+		}
 
 		// Draw UI to the window
 		gameWindow.setView(gameWindow.getDefaultView());
