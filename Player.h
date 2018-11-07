@@ -11,6 +11,7 @@ public:
 
 	//Overriding methods
 	void Update(sf::Time _FrameTime);
+	virtual void Collide(GameObject& _Collider);
 
 	//public player methods
 	int GetScore();

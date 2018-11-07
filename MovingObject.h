@@ -15,4 +15,6 @@ public:
 
 protected:
 	sf::Vector2f m_Velocity;
+	sf::Vector2f m_PreviousPosition;
+
 };

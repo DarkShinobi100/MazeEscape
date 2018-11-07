@@ -125,6 +125,11 @@ int main()
 			aExit.Update(FrameTime);
 
 		}
+		if (aWall.IsActive())
+		{
+			aWall.Update(FrameTime);
+
+		}
 		// -----------------------------------------------
 		// Collision Section
 		// -----------------------------------------------
@@ -145,6 +150,16 @@ int main()
 			{
 				
 				Key.Collide(Player);
+			}
+		}
+
+		//check Wall collision
+		if (aWall.IsActive() && Player.IsActive())
+		{
+			if (aWall.GetBounds().intersects(Player.GetBounds()))
+			{
+
+				Player.Collide(aWall);
 			}
 		}
 
@@ -176,6 +191,10 @@ int main()
 		if (Key.IsActive())
 		{
 			Key.Draw(gameWindow);//draw a key
+		}
+		if (aWall.IsActive())
+		{
+			aWall.Draw(gameWindow);//draw a key
 		}
 
 		// Draw UI to the window

@@ -1,9 +1,10 @@
 //project includes
 #include "Player.h"
 #include "AssetManager.h"
+#include"Wall.h"
 
 //constants
-#define SPEED 150.0f
+#define SPEED 250.0f
 
 Player::Player()
 	:MovingObject() //initalise parent class
@@ -52,6 +53,29 @@ void Player::Update(sf::Time _FrameTime)
 	//move the character
 
 	MovingObject::Update(_FrameTime);
+}
+
+void Player::Collide(GameObject& _Collider)
+{
+	// Only do something if the thing we touched was the wall
+
+	//dynamic cast the hame object reference
+	//into a wall pointer
+	//if it was successfull, it was a wall
+	Wall* WallCollider = dynamic_cast<Wall*>(&_Collider);
+
+	//if it was a wall we git, we need to move ourselves
+	//outside the walls bounds, aka back to our previous position
+	if (WallCollider != nullptr)
+	{
+		//if we actually DID hit a wall!
+
+		//set position to previous position that we just moved from this frame
+		m_Sprite.setPosition(m_PreviousPosition);
+
+		//clumsy - results in "sticky" walls
+		// but is good enough for basic games
+	}
 }
 
 int Player::GetScore() 
