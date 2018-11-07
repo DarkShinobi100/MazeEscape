@@ -12,7 +12,6 @@ Player::Player()
 	, m_KeyCollected(false)
 {
 	m_Sprite.setTexture(AssetManager::GetTexture("graphics/PlayerWalkDown2.png"));
-	m_Sprite.setPosition(10.0f, 200.0f);
 
 }
 

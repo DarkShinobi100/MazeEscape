@@ -16,6 +16,8 @@ public:
 	//overwriding methods
 	void Draw(sf::RenderTarget& _Target);
 	sf::FloatRect GetBounds(); //function for setting up bounding boxes
+	virtual void SetPosition(sf::Vector2f _Position);
+	virtual void SetPosition(float _X, float _Y);
 
 protected: //this means derived/child classes can access
 

@@ -46,18 +46,26 @@ int main()
 	//-=create test objects=-
 	//create a wall
 	Wall aWall;
-
+	aWall.SetPosition(100.0f,50.0f);
 	//create the player
 	Player Player;
+	Player.SetPosition(200.0f, 50.0f);
 
 	//create the Baddy
 	Baddy Baddy;
-
+	Baddy.SetPosition(300.0f, 50.0f);
+	
 	//create a key
 	Key Key;
+	Key.SetPosition(425.0f, 50.0f);
 
 	//create the score item
 	Score Score;
+	Score.SetPosition(550.0f, 50.0f);
+
+	//create a Coin
+	Coin Coin;
+	Coin.SetPosition(675.0f, 50.0f);
 
 	//set the address for player in Score
 	Score.SetPlayer(&Player);
@@ -66,8 +74,6 @@ int main()
 	Exit aExit;
 	aExit.SetPlayer(&Player);
 
-	//create a Coin
-	Coin Coin;
 
 	// -----------------------------------------------
 	// Game Loop

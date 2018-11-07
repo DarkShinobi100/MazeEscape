@@ -18,3 +18,13 @@ sf::FloatRect SpriteObject::GetBounds() //function for setting up bounding boxes
 {
 	return m_Sprite.getGlobalBounds();
 }
+
+void SpriteObject::SetPosition(sf::Vector2f _Position)
+{
+	m_Sprite.setPosition(_Position);
+}
+
+void SpriteObject::SetPosition(float _X, float _Y)
+{
+	m_Sprite.setPosition(_X, _Y);
+}

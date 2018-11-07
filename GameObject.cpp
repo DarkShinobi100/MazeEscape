@@ -31,3 +31,13 @@ bool GameObject::IsActive()
 {
 	return m_active;
 }
+
+void GameObject::SetPosition(sf::Vector2f _Position)
+{
+
+}
+
+void GameObject::SetPosition(float _X, float _Y)
+{
+
+}
