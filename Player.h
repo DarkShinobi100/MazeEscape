@@ -16,7 +16,11 @@ public:
 	int GetScore();
 	void ChangeScore(int _ChangeBy);
 
+	bool GetKeyCollected();
+	void SetKey(bool _Value);
+
 private:
 
 	int m_Score;
+	bool m_KeyCollected;
 };

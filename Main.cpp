@@ -14,6 +14,7 @@
 #include "Baddy.h"
 #include "Score.h"
 #include "Coin.h"
+#include "Key.h"
 
 // The main() Function - entry point for our program
 int main()
@@ -46,20 +47,24 @@ int main()
 	//create a wall
 	Wall aWall;
 
-	//create the exit
-	Exit aExit;
-	
 	//create the player
 	Player Player;
 
 	//create the Baddy
 	Baddy Baddy;
 
+	//create a key
+	Key Key;
+
 	//create the score item
 	Score Score;
 
 	//set the address for player in Score
 	Score.SetPlayer(&Player);
+
+	//create the exit
+	Exit aExit;
+	aExit.SetPlayer(&Player);
 
 	//create a Coin
 	Coin Coin;
@@ -115,6 +120,11 @@ int main()
 			Score.Update(FrameTime);
 		}
 
+		if (aExit.IsActive())
+		{
+			aExit.Update(FrameTime);
+
+		}
 		// -----------------------------------------------
 		// Collision Section
 		// -----------------------------------------------
@@ -128,6 +138,16 @@ int main()
 			}
 		}
 
+		//check key collision
+		if (Key.IsActive() && Player.IsActive())
+		{
+			if (Key.GetBounds().intersects(Player.GetBounds()))
+			{
+				
+				Key.Collide(Player);
+			}
+		}
+
 		// -----------------------------------------------
 		// Draw Section
 		// -----------------------------------------------
@@ -138,17 +158,24 @@ int main()
 		gameWindow.setView(camera);
 		// TODO: Draw game objects
 		aWall.Draw(gameWindow); //create a wall
-		aExit.Draw(gameWindow); //create an exit door
 		Baddy.Draw(gameWindow); //create the Enemy
 		
 		//only draw when active
 		if (Player.IsActive())
 		{
-			Player.Draw(gameWindow); //create the score
+			Player.Draw(gameWindow); //create the player
 		}
 		if (Coin.IsActive())
 		{
-			Coin.Draw(gameWindow); //create the score
+			Coin.Draw(gameWindow); //create the coin
+		}
+		if (aExit.IsActive())
+		{
+			aExit.Draw(gameWindow); //create the exit
+		}
+		if (Key.IsActive())
+		{
+			Key.Draw(gameWindow);//draw a key
 		}
 
 		// Draw UI to the window

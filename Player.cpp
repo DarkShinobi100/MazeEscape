@@ -8,6 +8,7 @@
 Player::Player()
 	:MovingObject() //initalise parent class
 	, m_Score(0) //initialise score
+	, m_KeyCollected(false)
 {
 	m_Sprite.setTexture(AssetManager::GetTexture("graphics/PlayerWalkDown2.png"));
 	m_Sprite.setPosition(10.0f, 200.0f);
@@ -61,4 +62,14 @@ int Player::GetScore()
 void Player::ChangeScore(int _ChangeBy)
 {
 	m_Score += _ChangeBy;
+}
+
+bool Player::GetKeyCollected()
+{
+	return m_KeyCollected;
+}
+
+void Player::SetKey(bool _Value)
+{
+	m_KeyCollected = _Value;
 }
