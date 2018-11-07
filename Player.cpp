@@ -7,6 +7,7 @@
 
 Player::Player()
 	:MovingObject() //initalise parent class
+	, m_Score(0) //initialise score
 {
 	m_Sprite.setTexture(AssetManager::GetTexture("graphics/PlayerWalkDown2.png"));
 	m_Sprite.setPosition(10.0f, 200.0f);
@@ -50,4 +51,14 @@ void Player::Update(sf::Time _FrameTime)
 	//move the character
 
 	MovingObject::Update(_FrameTime);
+}
+
+int Player::GetScore() 
+{
+	return m_Score;
+}
+
+void Player::ChangeScore(int _ChangeBy)
+{
+	m_Score += _ChangeBy;
 }

@@ -58,6 +58,9 @@ int main()
 	//create the score item
 	Score Score;
 
+	//set the address for player in Score
+	Score.SetPlayer(&Player);
+
 	//create a Coin
 	Coin Coin;
 
@@ -107,6 +110,10 @@ int main()
 		{
 			Coin.Update(FrameTime);
 		}
+		if (Score.IsActive())
+		{
+			Score.Update(FrameTime);
+		}
 
 		// -----------------------------------------------
 		// Collision Section
@@ -133,7 +140,6 @@ int main()
 		aWall.Draw(gameWindow); //create a wall
 		aExit.Draw(gameWindow); //create an exit door
 		Baddy.Draw(gameWindow); //create the Enemy
-		Score.Draw(gameWindow); //create the score
 		
 		//only draw when active
 		if (Player.IsActive())
@@ -147,7 +153,12 @@ int main()
 
 		// Draw UI to the window
 		gameWindow.setView(gameWindow.getDefaultView());
+		
 		// TODO: Draw UI objects
+		if (Score.IsActive())
+		{
+			Score.Draw(gameWindow); //create the score
+		}
 
 		// Display the window contents on the screen
 		gameWindow.display();

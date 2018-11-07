@@ -8,5 +8,7 @@ class Coin : public PickUp
 public:
 	Coin();
 
-	//TODO add on pickup()
+private:
+	//Overridding Methods
+	virtual void OnPickUp(Player& _Player);
 };
