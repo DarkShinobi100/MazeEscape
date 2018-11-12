@@ -48,19 +48,29 @@ int main()
 	std::vector<GameObject*> DrawListWorld;
 	std::vector<GameObject*> DrawListUI;
 
-	//-=create test objects=-
-	//create a wall
-	Wall aWall;
-	aWall.SetPosition(100.0f,50.0f);
-	UpdateList.push_back(&aWall);
-	DrawListWorld.push_back(&aWall);
+	std::vector<std::pair<GameObject*,GameObject*>>CollisionList;
 
+	//-=create test objects=-
 	//create the player
 	Player Player;
 	Player.SetPosition(200.0f, 50.0f);
 	UpdateList.push_back(&Player);
 	DrawListWorld.push_back(&Player);
 
+	//create a Coin
+	Coin Coin;
+	Coin.SetPosition(675.0f, 50.0f);
+	UpdateList.push_back(&Coin);
+	DrawListWorld.push_back(&Coin);
+	CollisionList.push_back(std::make_pair(&Coin, &Player));
+
+	//create a wall
+	Wall aWall;
+	aWall.SetPosition(100.0f,50.0f);
+	UpdateList.push_back(&aWall);
+	DrawListWorld.push_back(&aWall);
+	CollisionList.push_back(std::make_pair(&Player, &aWall));
+	   
 	//create the Baddy
 	Baddy Baddy;
 	Baddy.SetPosition(300.0f, 250.0f);
@@ -72,6 +82,7 @@ int main()
 	Key.SetPosition(425.0f, 50.0f);
 	UpdateList.push_back(&Key);
 	DrawListWorld.push_back(&Key);
+	CollisionList.push_back(std::make_pair(&Key, &Player));
 
 	//create the score item
 	Score Score;
@@ -82,11 +93,7 @@ int main()
 	//set the address for player in Score
 	Score.SetPlayer(&Player);
 
-	//create a Coin
-	Coin Coin;
-	Coin.SetPosition(675.0f, 50.0f);
-	UpdateList.push_back(&Coin);
-	DrawListWorld.push_back(&Coin);
+
 
 	//create the exit
 	Exit aExit;
@@ -140,32 +147,19 @@ int main()
 		// Collision Section
 		// -----------------------------------------------
 
-		// TODO: Collision detection
-		if (Coin.IsActive() && Player.IsActive())
-		{
-			if (Coin.GetBounds().intersects(Player.GetBounds()))
-			{
-				Coin.Collide(Player);
-			}
-		}
+		// Collision detection
 
-		//check key collision
-		if (Key.IsActive() && Player.IsActive())
+		for (int i = 0; i < CollisionList.size(); ++i)
 		{
-			if (Key.GetBounds().intersects(Player.GetBounds()))
-			{
-				
-				Key.Collide(Player);
-			}
-		}
+			GameObject* Handler = CollisionList[i].first;
+			GameObject* Collider = CollisionList[i].second;
 
-		//check Wall collision
-		if (aWall.IsActive() && Player.IsActive())
-		{
-			if (aWall.GetBounds().intersects(Player.GetBounds()))
+			if (Handler->IsActive() && Collider->IsActive())
 			{
-
-				Player.Collide(aWall);
+				if (Handler->GetBounds().intersects(Collider->GetBounds()))
+				{
+					Handler->Collide(*Collider);
+				}
 			}
 		}
 
@@ -177,19 +171,19 @@ int main()
 
 		// Draw game world to the window
 		gameWindow.setView(camera);
-		// TODO: Draw game objects
+		
+		// Draw game objects
 		//only draw when active
 		for (int i = 0; i < DrawListWorld.size(); ++i)
 		{
 			if (DrawListWorld[i]->IsActive())
 				DrawListWorld[i]->Draw(gameWindow);
 		}
-
-
+		
 		// Draw UI to the window
 		gameWindow.setView(gameWindow.getDefaultView());
 		
-		// TODO: Draw UI objects
+		//Draw UI objects
 		for (int i = 0; i < DrawListUI.size(); ++i)
 		{
 			if (DrawListUI[i]->IsActive())
