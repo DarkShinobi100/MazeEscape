@@ -43,36 +43,57 @@ int main()
 	sf::View camera = gameWindow.getDefaultView();
 
 
+	// game object lists
+	std::vector<GameObject*> UpdateList;
+	std::vector<GameObject*> DrawListWorld;
+	std::vector<GameObject*> DrawListUI;
+
 	//-=create test objects=-
 	//create a wall
 	Wall aWall;
 	aWall.SetPosition(100.0f,50.0f);
+	UpdateList.push_back(&aWall);
+	DrawListWorld.push_back(&aWall);
+
 	//create the player
 	Player Player;
 	Player.SetPosition(200.0f, 50.0f);
+	UpdateList.push_back(&Player);
+	DrawListWorld.push_back(&Player);
 
 	//create the Baddy
 	Baddy Baddy;
-	Baddy.SetPosition(300.0f, 50.0f);
+	Baddy.SetPosition(300.0f, 250.0f);
+	UpdateList.push_back(&Baddy);
+	DrawListWorld.push_back(&Baddy);
 	
 	//create a key
 	Key Key;
 	Key.SetPosition(425.0f, 50.0f);
+	UpdateList.push_back(&Key);
+	DrawListWorld.push_back(&Key);
 
 	//create the score item
 	Score Score;
 	Score.SetPosition(550.0f, 50.0f);
-
-	//create a Coin
-	Coin Coin;
-	Coin.SetPosition(675.0f, 50.0f);
+	UpdateList.push_back(&Score);
+	DrawListUI.push_back(&Score);
 
 	//set the address for player in Score
 	Score.SetPlayer(&Player);
 
+	//create a Coin
+	Coin Coin;
+	Coin.SetPosition(675.0f, 50.0f);
+	UpdateList.push_back(&Coin);
+	DrawListWorld.push_back(&Coin);
+
 	//create the exit
 	Exit aExit;
+	aExit.SetPosition(400.0f, 100.0f);
 	aExit.SetPlayer(&Player);
+	UpdateList.push_back(&aExit);
+	DrawListWorld.push_back(&aExit);
 
 
 	// -----------------------------------------------
@@ -107,35 +128,14 @@ int main()
 		// Get the time passed since the last frame and restart our game clock
 		sf::Time FrameTime = gameClock.restart();
 
-		// TODO: Update all game objects
+		// Update all game objects
 		// Only draw if the game object is active
-		if (Player.IsActive())
+		for (int i = 0; i < UpdateList.size(); ++i)
 		{
-			Player.Update(FrameTime);
-		}
-		if (Baddy.IsActive())
-		{
-			Baddy.Update(FrameTime);
-		}
-		if (Coin.IsActive())
-		{
-			Coin.Update(FrameTime);
-		}
-		if (Score.IsActive())
-		{
-			Score.Update(FrameTime);
+			if(UpdateList[i]->IsActive())
+			UpdateList[i]->Update(FrameTime);
 		}
 
-		if (aExit.IsActive())
-		{
-			aExit.Update(FrameTime);
-
-		}
-		if (aWall.IsActive())
-		{
-			aWall.Update(FrameTime);
-
-		}
 		// -----------------------------------------------
 		// Collision Section
 		// -----------------------------------------------
@@ -178,38 +178,22 @@ int main()
 		// Draw game world to the window
 		gameWindow.setView(camera);
 		// TODO: Draw game objects
-		aWall.Draw(gameWindow); //create a wall
-		Baddy.Draw(gameWindow); //create the Enemy
-		
 		//only draw when active
-		if (Player.IsActive())
+		for (int i = 0; i < DrawListWorld.size(); ++i)
 		{
-			Player.Draw(gameWindow); //create the player
+			if (DrawListWorld[i]->IsActive())
+				DrawListWorld[i]->Draw(gameWindow);
 		}
-		if (Coin.IsActive())
-		{
-			Coin.Draw(gameWindow); //create the coin
-		}
-		if (aExit.IsActive())
-		{
-			aExit.Draw(gameWindow); //create the exit
-		}
-		if (Key.IsActive())
-		{
-			Key.Draw(gameWindow);//draw a key
-		}
-		if (aWall.IsActive())
-		{
-			aWall.Draw(gameWindow);//draw a key
-		}
+
 
 		// Draw UI to the window
 		gameWindow.setView(gameWindow.getDefaultView());
 		
 		// TODO: Draw UI objects
-		if (Score.IsActive())
+		for (int i = 0; i < DrawListUI.size(); ++i)
 		{
-			Score.Draw(gameWindow); //create the score
+			if (DrawListUI[i]->IsActive())
+				DrawListUI[i]->Draw(gameWindow);
 		}
 
 		// Display the window contents on the screen
