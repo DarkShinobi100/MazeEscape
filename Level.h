@@ -2,8 +2,6 @@
 
 //project includes
 #include "GameObject.h"
-#include "Player.h"
-
 
 class Level
 {
@@ -15,9 +13,12 @@ public:
 	void Update(sf::Time _FrameTime);
 
 	void LoadLevel(int _LevelToLoad);
+	void ReloadLevel();
+
 private:
 
-	Player* m_Player;
+	int m_CurrentLevel;
+	GameObject* m_Player;
 	// game object lists
 	std::vector<GameObject*> m_UpdateList;
 	std::vector<GameObject*> m_DrawListWorld;

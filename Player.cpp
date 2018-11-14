@@ -11,6 +11,7 @@ Player::Player()
 	, m_Score(0) //initialise score
 	, m_KeyCollected(false)
 	, m_AnimationSystem()
+	, m_Level(nullptr)
 {
 	m_Sprite.setTexture(AssetManager::GetTexture("graphics/PlayerWalkDown2.png"));
 	
@@ -116,4 +117,18 @@ bool Player::GetKeyCollected()
 void Player::SetKey(bool _Value)
 {
 	m_KeyCollected = _Value;
+}
+
+void Player::Kill()
+{
+	// reload current level
+	if (m_Level != nullptr)
+	{
+		m_Level->ReloadLevel();
+	}
+}
+
+void Player::SetLevel(Level* _NewLevel)
+{
+	m_Level = _NewLevel;
 }
