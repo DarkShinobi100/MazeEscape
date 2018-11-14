@@ -145,10 +145,11 @@ void Level::LoadLevel(int _LevelToLoad)
 
 	//create the exit
 	Exit* aExit = new Exit;
-	aExit->SetPosition(400.0f, 100.0f);
+	aExit->SetPosition(800.0f, 500.0f);
 	aExit->SetPlayer(OurPlayer);
 	m_UpdateList.push_back(aExit);
 	m_DrawListWorld.push_back(aExit);
+	m_CollisionList.push_back(std::make_pair(aExit, OurPlayer));
 
 	//create a hazard
 	Hazard* aHazard = new Hazard;
@@ -162,4 +163,9 @@ void Level::LoadLevel(int _LevelToLoad)
 void Level::ReloadLevel()
 {
 	LoadLevel(m_CurrentLevel);
+}
+
+void Level::LoadNextLevel()
+{
+	LoadLevel(m_CurrentLevel + 1);
 }

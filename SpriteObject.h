@@ -22,5 +22,5 @@ public:
 protected: //this means derived/child classes can access
 
 	sf::Sprite m_Sprite;
-
+	
 };

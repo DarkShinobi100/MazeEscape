@@ -15,6 +15,7 @@ Player::Player()
 {
 	m_Sprite.setTexture(AssetManager::GetTexture("graphics/PlayerWalkDown2.png"));
 	
+	
 
 	//set up the animation
 	m_AnimationSystem.SetSprite(m_Sprite);
@@ -131,4 +132,13 @@ void Player::Kill()
 void Player::SetLevel(Level* _NewLevel)
 {
 	m_Level = _NewLevel;
+}
+
+void Player::NextLevel()
+{
+	// check level pointer is valid
+	if (m_Level != nullptr)
+	{
+		m_Level->LoadNextLevel();
+	}
 }

@@ -23,6 +23,7 @@ public:
 	void SetKey(bool _Value);
 	void Kill();
 	void SetLevel(Level* _NewLevel);
+	void NextLevel();
 
 private:
 
