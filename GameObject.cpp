@@ -41,3 +41,8 @@ void GameObject::SetPosition(float _X, float _Y)
 {
 
 }
+
+sf::Vector2f GameObject::GetPosition()
+{
+	return sf::Vector2f();
+}

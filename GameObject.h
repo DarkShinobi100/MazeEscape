@@ -17,6 +17,7 @@ public:
 	virtual void SetPosition(sf::Vector2f _Position);
 	virtual void SetPosition(float _X, float _Y);
 	bool IsActive();
+	virtual sf::Vector2f GetPosition();
 
 protected:
 	bool m_active;
