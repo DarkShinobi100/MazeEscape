@@ -9,6 +9,10 @@
 #include "Key.h"
 #include "Hazard.h"
 
+//library includes
+#include <iostream>
+#include <fstream>
+
 Level::Level()
 	:m_CurrentLevel(0)
 	, m_Player(nullptr)
@@ -99,42 +103,127 @@ void Level::LoadLevel(int _LevelToLoad)
 	m_CurrentLevel = _LevelToLoad;
 
 	//-=Set up the new level=-
-	//create the player
-	Player* OurPlayer =  new Player();
-	OurPlayer->SetPosition(200.0f, 50.0f);
-	OurPlayer->SetLevel(this);
-	m_UpdateList.push_back(OurPlayer);
-	m_DrawListWorld.push_back(OurPlayer);
+
+	// Open our file for reading
+	std::ifstream inFile;
+	std::string fileName = "levels/Level" + std::to_string(m_CurrentLevel) + ".txt";
+	inFile.open(fileName);
+
+	// make sure the file was opened
+	if (!inFile)
+	{
+		std::cerr << "Unable to open file " + fileName;
+		exit(1); // call system to stop program with error
+
+	}
+
+	// set the starting X and Y coordinates used to position level objects
+	float X = 0.0f;
+	float Y = 0.0f;
+
+	//Define the spacing we will use for our grid
+	const float X_SPACE = 100.0f;
+	const float Y_SPACE = 100.0f;
+
+	//create the player first as other objects will need to reference it
+	Player* OurPlayer = new Player();
 	m_Player = OurPlayer;
 
-	//create a Coin
-	Coin* aCoin = new Coin();
-	aCoin->SetPosition(675.0f, 50.0f);
-	m_UpdateList.push_back(aCoin);
-	m_DrawListWorld.push_back(aCoin);
-	m_CollisionList.push_back(std::make_pair(aCoin, OurPlayer));
+	// read each character one by one from the file...
+	char ch;
+	//each time try to read the next character
+	//if successful, execute body of loop
+	//the "noskipws" means our input from the fill will include
+	// the white space(spaces and new lines)
+	while (inFile>> std::noskipws >> ch)
+	{
+		//perform actions based on what character was read in
+		if (ch == ' ')
+		{
+			X += X_SPACE;
+		}
+		else if (ch == '\n')
+		{
+			Y += Y_SPACE;
+			X = 0;
+		}
+		else if (ch == 'P')
+		{
+			//create the player
+			OurPlayer->SetPosition(X, Y);
+			OurPlayer->SetLevel(this);
+			m_UpdateList.push_back(OurPlayer);
+			m_DrawListWorld.push_back(OurPlayer);
+		}
+		else if (ch == 'W')
+		{
+			//create a wall
+			Wall* aWall = new Wall();
+			aWall->SetPosition(X, Y);
+			m_UpdateList.push_back(aWall);
+			m_DrawListWorld.push_back(aWall);
+			m_CollisionList.push_back(std::make_pair(OurPlayer, aWall));
+		}
+		else if (ch == 'C')
+		{
+			//create a Coin
+			Coin* aCoin = new Coin();
+			aCoin->SetPosition(X, Y);
+			m_UpdateList.push_back(aCoin);
+			m_DrawListWorld.push_back(aCoin);
+			m_CollisionList.push_back(std::make_pair(aCoin, OurPlayer));
+		}
+		else if (ch == 'B')
+		{
+			//create the Baddy
+			Baddy* aBaddy = new Baddy();
+			aBaddy->SetPosition(X, Y);
+			m_UpdateList.push_back(aBaddy);
+			m_DrawListWorld.push_back(aBaddy);
+		}
+		else if (ch == 'K')
+		{
+			//create a key
+			Key* aKey = new Key();
+			aKey->SetPosition(X, Y);
+			m_UpdateList.push_back(aKey);
+			m_DrawListWorld.push_back(aKey);
+			m_CollisionList.push_back(std::make_pair(aKey, OurPlayer));
+		}
+		else if (ch == 'E')
+		{
+			//create the exit
+			Exit* aExit = new Exit;
+			aExit->SetPosition(X, Y);
+			aExit->SetPlayer(OurPlayer);
+			m_UpdateList.push_back(aExit);
+			m_DrawListWorld.push_back(aExit);
+			m_CollisionList.push_back(std::make_pair(aExit, OurPlayer));
+		}
+		else if (ch == 'H')
+		{
+			//create a hazard
+			Hazard* aHazard = new Hazard;
+			aHazard->SetPosition(X, Y);
+			m_UpdateList.push_back(aHazard);
+			m_DrawListWorld.push_back(aHazard);
+			m_CollisionList.push_back(std::make_pair(aHazard, OurPlayer));
+		}
+		else if (ch == '-')
+		{
+			// do nothing - empty space
+		}
+		else
+		{
+			std::cerr << "unrecognised character in level file: " << ch;
+		}
 
-	//create a wall
-	Wall* aWall = new Wall();
-	aWall->SetPosition(100.0f, 50.0f);
-	m_UpdateList.push_back(aWall);
-	m_DrawListWorld.push_back(aWall);
-	m_CollisionList.push_back(std::make_pair(OurPlayer, aWall));
+	}
 
-	//create the Baddy
-	Baddy* aBaddy = new Baddy();
-	aBaddy->SetPosition(300.0f, 250.0f);
-	m_UpdateList.push_back(aBaddy);
-	m_DrawListWorld.push_back(aBaddy);
+	//close the file now that were done with it
+	inFile.close();
 
-	//create a key
-	Key* aKey = new Key();
-	aKey->SetPosition(425.0f, 50.0f);
-	m_UpdateList.push_back(aKey);
-	m_DrawListWorld.push_back(aKey);
-	m_CollisionList.push_back(std::make_pair(aKey, OurPlayer));
-
-	//create the score item
+	//create the score item indepentantly as it isn't dependant on the level
 	Score* aScore = new Score();
 	aScore->SetPosition(550.0f, 50.0f);
 	m_UpdateList.push_back(aScore);
@@ -142,23 +231,7 @@ void Level::LoadLevel(int _LevelToLoad)
 
 	//set the address for player in Score
 	aScore->SetPlayer(OurPlayer);
-
-	//create the exit
-	Exit* aExit = new Exit;
-	aExit->SetPosition(800.0f, 500.0f);
-	aExit->SetPlayer(OurPlayer);
-	m_UpdateList.push_back(aExit);
-	m_DrawListWorld.push_back(aExit);
-	m_CollisionList.push_back(std::make_pair(aExit, OurPlayer));
-
-	//create a hazard
-	Hazard* aHazard = new Hazard;
-	aHazard->SetPosition(650.0f, 300.0f);
-	m_UpdateList.push_back(aHazard);
-	m_DrawListWorld.push_back(aHazard);
-	m_CollisionList.push_back(std::make_pair(aHazard, OurPlayer));
-
-}
+	}
 
 void Level::ReloadLevel()
 {
